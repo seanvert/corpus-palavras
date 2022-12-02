@@ -1,0 +1,4 @@
+* setup
+#+begin_src 
+cargo run
+#+end_src
