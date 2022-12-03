@@ -1,10 +1,11 @@
-use core::option::Option;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
 use std::string::ToString;
-use tl::{parse, Bytes, ParserOptions};
+
 fn main() -> std::io::Result<()> {
+    // use serde_json::to_writer;
+    // use tl::{parse, Bytes, ParserOptions};
     let mut file = File::open("testedados")?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
@@ -30,20 +31,18 @@ fn main() -> std::io::Result<()> {
         for token in words {
             let key = String::from(token);
             // inserir as palavras no hash
+            // contar as palavras
             if map.contains_key(&key) {
                 *map.get_mut(&key).unwrap() += 1;
             } else {
                 map.insert(key, 1);
             };
-
-            // contar as palavras
         }
-
-        // salvar arquivo
     }
-    // if None::<i32> == None {
-    //     println!("asd");
-    // }
+    // salvar arquivo
+    let mut output = File::create("out.txt")?;
+    serde_json::to_writer(output, &map)?;
+
     for (key, value) in map {
         println!("{key}, {value}");
     }
